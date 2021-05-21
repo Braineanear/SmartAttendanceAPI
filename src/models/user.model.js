@@ -28,13 +28,6 @@ const userSchema = mongoose.Schema(
         }
       }
     },
-    profileImage: {
-      type: String,
-      required: [true, 'Please select an image']
-    },
-    profileImageId: {
-      type: String
-    },
     password: {
       type: String,
       required: [true, 'Please provide a password'],
@@ -78,10 +71,14 @@ const userSchema = mongoose.Schema(
     group: {
       type: mongoose.Types.ObjectId,
       ref: 'Group'
+    },
+    courses: {
+      type: Array
     }
   },
   {
-    timestamps: true
+    timestamps: true,
+    private: true
   }
 );
 
