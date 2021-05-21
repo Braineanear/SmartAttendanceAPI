@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import toJSON from './plugins/toJSON.plugin';
 
 const groupSchema = mongoose.Schema(
   {
@@ -12,6 +13,8 @@ const groupSchema = mongoose.Schema(
   },
   { timestamps: true }
 );
+
+groupSchema.plugin(toJSON);
 
 const Group = mongoose.model('Group', groupSchema);
 
