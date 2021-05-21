@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import toJSON from './plugins/toJSON.plugin';
 
 const courseSchema = mongoose.Schema(
   {
@@ -12,6 +13,8 @@ const courseSchema = mongoose.Schema(
   },
   { timestamps: true }
 );
+
+courseSchema.plugin(toJSON);
 
 const Course = mongoose.model('Course', courseSchema);
 
