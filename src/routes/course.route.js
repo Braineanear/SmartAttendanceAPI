@@ -15,7 +15,7 @@ const router = express.Router();
 router.route('/').get(getAllCourses).post(auth('admin'), createCourse);
 
 router
-  .route('/')
+  .route('/:id')
   .get(getCourse)
   .patch(auth('admin'), updateCourse)
   .delete(auth('admin'), deleteCourse);
