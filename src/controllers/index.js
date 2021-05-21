@@ -19,6 +19,7 @@ import {
   createGroup,
   getAllGroups,
   getGroup,
+  getGroupsAndDepartments,
   updateGroup,
   deleteGroup
 } from './group.controller';
@@ -38,6 +39,8 @@ import {
   updateCourse,
   deleteCourse
 } from './course.controller';
+
+import { studentAttend, getAttendance } from './attendance.controller';
 
 const authController = {
   register,
@@ -60,6 +63,7 @@ const groupController = {
   createGroup,
   getAllGroups,
   getGroup,
+  getGroupsAndDepartments,
   updateGroup,
   deleteGroup
 };
@@ -80,10 +84,16 @@ const courseController = {
   deleteCourse
 };
 
+const attendanceController = {
+  studentAttend,
+  getAttendance
+};
+
 export {
   authController,
   userController,
   groupController,
   departmentController,
-  courseController
+  courseController,
+  attendanceController
 };
