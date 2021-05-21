@@ -1,8 +1,12 @@
+import { login, resetPassword, verifyEmail } from './auth.service';
+
 import {
-  loginWithEmailAndPassword,
-  resetPassword,
-  verifyEmail
-} from './auth.service';
+  createUser,
+  queryUsers,
+  queryUser,
+  updateUser,
+  deleteUser
+} from './user.service';
 
 import {
   generateToken,
@@ -20,15 +24,6 @@ import {
   sendAfterResetPasswordMessage,
   sendVerificationEmail
 } from './email.service';
-
-import {
-  createUser,
-  queryUsers,
-  queryUser,
-  updateUserDetails,
-  updateUserProfileImage,
-  deleteUser
-} from './user.service';
 
 import {
   createCourse,
@@ -50,14 +45,25 @@ import {
   createGroup,
   queryGroups,
   queryGroup,
+  queryGroupsAndDepartments,
   updateGroup,
   deleteGroup
 } from './group.service';
 
+import { studentAttend, getAttendance } from './attendance.service';
+
 const authService = {
-  loginWithEmailAndPassword,
+  login,
   resetPassword,
   verifyEmail
+};
+
+const userService = {
+  createUser,
+  queryUsers,
+  queryUser,
+  updateUser,
+  deleteUser
 };
 
 const emailService = {
@@ -75,15 +81,6 @@ const tokenService = {
   generateAuthTokens,
   generateResetPasswordToken,
   generateVerifyEmailToken
-};
-
-const userService = {
-  createUser,
-  queryUsers,
-  queryUser,
-  updateUserDetails,
-  updateUserProfileImage,
-  deleteUser
 };
 
 const courseService = {
@@ -106,8 +103,14 @@ const groupService = {
   createGroup,
   queryGroups,
   queryGroup,
+  queryGroupsAndDepartments,
   updateGroup,
   deleteGroup
+};
+
+const attendanceService = {
+  studentAttend,
+  getAttendance
 };
 
 export {
@@ -117,5 +120,6 @@ export {
   emailService,
   courseService,
   departmentService,
-  groupService
+  groupService,
+  attendanceService
 };
