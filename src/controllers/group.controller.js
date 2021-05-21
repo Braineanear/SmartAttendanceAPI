@@ -91,6 +91,34 @@ export const getGroup = catchAsync(async (req, res) => {
 });
 
 /**
+ * Get All Groups & Departments
+ * @param   {Object} req
+ * @param   {Object} res
+ * @returns {JSON}
+ */
+export const getGroupsAndDepartments = catchAsync(async (req, res) => {
+  // 1) Get All Groups & Departments
+  const { type, message, statusCode, groups, departments } =
+    await groupService.queryGroupsAndDepartments(req);
+
+  // 2) Check If There is an Error
+  if (type === 'Error') {
+    return res.status(statusCode).json({
+      type,
+      message
+    });
+  }
+
+  // 3) If Everything is OK, Send Data
+  return res.status(statusCode).json({
+    type,
+    message,
+    groups,
+    departments
+  });
+});
+
+/**
  * Update Group Using It's ID
  * @param   {Object} req
  * @param   {Object} res
