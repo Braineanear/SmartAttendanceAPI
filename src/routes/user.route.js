@@ -25,7 +25,7 @@ router
   .get(validate(getUsersValidate), getUsers);
 
 router
-  .route('/:userId')
+  .route('/:id')
   .get(validate(getUserValidate), getUser)
   .patch(auth('admin'), validate(updateUserValidate), updateUser)
   .delete(auth('admin'), validate(deleteUserValidate), deleteUser);
