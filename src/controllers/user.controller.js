@@ -4,9 +4,6 @@ import catchAsync from '../utils/catchAsync';
 // Services
 import { userService } from '../services/index';
 
-// Models
-import { User } from '../models/index';
-
 /**
  * Create New User
  * @param   {Object} req
@@ -15,7 +12,9 @@ import { User } from '../models/index';
  */
 export const createUser = catchAsync(async (req, res) => {
   // 1) Create User Document
-  const { type, message, statusCode, user } = await userService.createUser(req);
+  const { type, message, statusCode, user } = await userService.createUser(
+    req.body
+  );
 
   // 2) Check If There is an Error
   if (type === 'Error') {
@@ -62,7 +61,7 @@ export const getUsers = catchAsync(async (req, res) => {
 });
 
 /**
- * Get User Data
+ * Get User Using It's ID
  * @param   {Object} req
  * @param   {Object} res
  * @returns {JSON}
@@ -71,7 +70,7 @@ export const getUser = catchAsync(async (req, res) => {
   const { id } = req.params;
 
   // 1) Find User Document By It's ID
-  const { type, message, statusCode, user } = await User.findById(id);
+  const { type, message, statusCode, user } = await userService.queryUser(id);
 
   // 2) Check If There is an Error
   if (type === 'Error') {
@@ -90,14 +89,14 @@ export const getUser = catchAsync(async (req, res) => {
 });
 
 /**
- * Update User's Data
+ * Update User Using It's ID
  * @param   {Object} req
  * @param   {Object} res
  * @returns {JSON}
  */
 export const updateUser = catchAsync(async (req, res) => {
   // 1) Find User Document and Update it
-  const { type, message, statusCode, user } = await userService.updateUserById(
+  const { type, message, statusCode, user } = await userService.updateUser(
     req.params.id,
     req.body
   );
@@ -119,14 +118,14 @@ export const updateUser = catchAsync(async (req, res) => {
 });
 
 /**
- * Delete User's Data
+ * Delete User Using It's ID
  * @param   {Object} req
  * @param   {Object} res
  * @returns {JSON}
  */
 export const deleteUser = catchAsync(async (req, res) => {
   // 1) Find User Document and Delete it
-  const { type, message, statusCode } = await userService.deleteUserById(
+  const { type, message, statusCode } = await userService.deleteUser(
     req.params.id
   );
 
