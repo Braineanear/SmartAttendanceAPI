@@ -3,7 +3,7 @@ import APIFeatures from '../utils/apiFeatures';
 import catchAsync from '../utils/catchAsync';
 
 // Models
-import { Group } from '../models/index';
+import { Group, Department } from '../models/index';
 
 export const createGroup = catchAsync(async (body) => {
   const { name } = body;
@@ -63,6 +63,29 @@ export const queryGroup = catchAsync(async (id) => {
     message: 'Group Found Successfully',
     statusCode: 200,
     group
+  };
+});
+
+export const queryGroupsAndDepartments = catchAsync(async (req) => {
+  req.query.select = 'name';
+
+  const groups = await APIFeatures(req, Group);
+  const departments = await APIFeatures(req, Department);
+
+  if (!groups && !departments) {
+    return {
+      type: 'Error',
+      message: 'No Groups & Departments Found',
+      statusCode: 404
+    };
+  }
+
+  return {
+    type: 'Success',
+    message: 'Groups & Departments Found Successfully',
+    statusCode: 200,
+    groups,
+    departments
   };
 });
 
