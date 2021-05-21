@@ -73,6 +73,8 @@ export const createUser = catchAsync(async (body) => {
       group
     });
 
+    delete user.courses;
+
     return {
       type: 'Success',
       message: 'Account Created Successfully',
