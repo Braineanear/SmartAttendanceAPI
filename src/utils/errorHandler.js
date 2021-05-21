@@ -31,20 +31,18 @@ const handleValidationErrorDB = (err) => {
 };
 
 // @desc    Function That Shows Details About The Error Only on The Development Phase
-const sendErrorDev = async (err, req, res) =>
+const sendErrorDev = (err, req, res) =>
   res.status(err.statusCode).json({
-    status: err.status,
-    error: err,
-    message: `${err.message}`,
-    stack: err.stack
+    type: err.type,
+    message: `${err.message}`
   });
 
 // @desc    Function That Shows Little Info About The Error Only on The Production Phase
-const sendErrorProd = async (err, req, res) => {
+const sendErrorProd = (err, req, res) => {
   // A) Operational, trusted error: send message to client
   if (err.isOperational) {
     return res.status(err.statusCode).json({
-      status: err.status,
+      type: err.type,
       message: `${err.message}`
     });
   }
@@ -54,14 +52,14 @@ const sendErrorProd = async (err, req, res) => {
   logger.error('ERROR 💥', err);
   // 2) Send generic message
   return res.status(500).json({
-    status: 'error',
-    message: `Something went wrong!`
+    type: 'Error',
+    message: 'Something went wrong!'
   });
 };
 
 export default (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
-  err.status = err.status || 'error';
+  err.type = err.type || 'Error';
 
   // Send Errors in The Development Phase
   if (process.env.NODE_ENV === 'development') {
