@@ -1,7 +1,6 @@
 /**
  * A mongoose schema plugin which applies the following in the toJSON transform call:
  *  - removes __v, createdAt, updatedAt, and any path that has private: true
- * remove _id
  */
 
 const deleteAtPath = (obj, path, index) => {
@@ -26,7 +25,6 @@ const toJSON = (schema) => {
         }
       });
 
-      delete ret._id;
       delete ret.__v;
       delete ret.createdAt;
       delete ret.updatedAt;
