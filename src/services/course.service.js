@@ -119,7 +119,14 @@ export const updateCourse = catchAsync(async (id, body) => {
   }
 
   // 4) Update Course
-  course = await course.findByIdAndUpdate(id, { name });
+  course = await Course.findByIdAndUpdate(
+    id,
+    { name },
+    {
+      new: true,
+      runValidators: true
+    }
+  );
 
   // 5) If Everything is OK, Send Data
   return {
@@ -149,7 +156,7 @@ export const deleteCourse = catchAsync(async (id) => {
   }
 
   // 3) Delete Course
-  await course.findByIdAndDelete(id);
+  await Course.findByIdAndDelete(id);
 
   // 4) If Everything is OK, Send Data
   return {
