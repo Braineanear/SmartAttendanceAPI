@@ -16,7 +16,7 @@ import { Token, User } from '../models/index';
  * @param     {Object} body - Email & Password
  * @returns   {Promise<User>}
  */
-export const loginWithEmailAndPassword = catchAsync(async (body) => {
+export const login = catchAsync(async (body) => {
   const { email, password } = body;
 
   // 1) Check Email & Password
@@ -29,13 +29,10 @@ export const loginWithEmailAndPassword = catchAsync(async (body) => {
   }
 
   // 2) Get User With Specific Email and Password
-  const user = await User.findOne({ email }).select('+password');
+  const user = await User.findOne({ email }).select('+password -courses');
 
-  // 3) Check if Passwords are The Same
-  const isMatch = await user.isPasswordMatch(password);
-
-  // 4) If Email or Passwords isn't Correct
-  if (!user || !isMatch) {
+  // 3) Check If Email isn't Correct
+  if (!user) {
     return {
       type: 'Error',
       message: 'Incorrect Email or Password',
@@ -43,7 +40,19 @@ export const loginWithEmailAndPassword = catchAsync(async (body) => {
     };
   }
 
-  // 5) If Everything OK, Send User
+  // 4) Check if Passwords are The Same
+  const isMatch = await user.isPasswordMatch(password);
+
+  // 5) Check If Password isn't Correct
+  if (!isMatch) {
+    return {
+      type: 'Error',
+      message: 'Incorrect Email or Password',
+      statusCode: 403
+    };
+  }
+
+  // 6) If Everything OK, Send User
   return {
     type: 'Success',
     message: 'User Logged In Successfully',
