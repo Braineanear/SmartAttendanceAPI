@@ -1,8 +1,6 @@
 // Utils
 import catchAsync from '../utils/catchAsync';
 import APIFeatures from '../utils/apiFeatures';
-import dataUri from '../utils/datauri';
-import { uploadFile, destroyFile } from '../utils/cloudinary';
 
 // Models
 import { User } from '../models/index';
@@ -13,16 +11,18 @@ import { User } from '../models/index';
  * @param     {Object} profileImage
  * @returns   {Object<type|message|statusCode|user>}
  */
-export const createUser = catchAsync(async (body, profileImage) => {
-  if (profileImage === undefined) {
-    return {
-      type: 'Error',
-      message: 'Profile Image Is Required, Please Upload an Image',
-      statusCode: 400
-    };
-  }
-  const { name, username, email, password, passwordConfirmation, role } = body;
-  const { department, group } = body;
+export const createUser = catchAsync(async (body) => {
+  const {
+    name,
+    username,
+    email,
+    password,
+    passwordConfirmation,
+    role,
+    department,
+    group,
+    courses
+  } = body;
 
   if (
     !name ||
@@ -30,8 +30,7 @@ export const createUser = catchAsync(async (body, profileImage) => {
     !email ||
     !password ||
     !passwordConfirmation ||
-    !role ||
-    profileImage.length === 0
+    !role
   ) {
     return {
       type: 'Error',
@@ -52,6 +51,8 @@ export const createUser = catchAsync(async (body, profileImage) => {
     };
   }
 
+  let user;
+
   if (role === 'student') {
     if (!department || !group) {
       return {
@@ -60,22 +61,7 @@ export const createUser = catchAsync(async (body, profileImage) => {
         statusCode: 400
       };
     }
-  }
 
-  // 3) Specifiy Folder Name Where The Images Are Going To Be Uploaded In Cloudinary
-  const folderName = `Users/${name.trim().split(' ').join('')}`;
-
-  // 4) Upload Image to Cloudinary
-  const image = await uploadFile(
-    dataUri(profileImage).content,
-    folderName,
-    600
-  );
-
-  // 3) Create New User
-  let user;
-
-  if (role === 'student') {
     user = await User.create({
       name,
       username,
@@ -84,10 +70,42 @@ export const createUser = catchAsync(async (body, profileImage) => {
       passwordConfirmation,
       role,
       department,
-      group,
-      profileImage: image.secure_url,
-      profileImageId: image.public_id
+      group
     });
+
+    return {
+      type: 'Success',
+      message: 'Account Created Successfully',
+      statusCode: 201,
+      user
+    };
+  }
+
+  if (role === 'instructor') {
+    if (!courses) {
+      return {
+        type: 'Error',
+        message: 'All Fields Are Required',
+        statusCode: 400
+      };
+    }
+
+    user = await User.create({
+      name,
+      username,
+      email,
+      password,
+      passwordConfirmation,
+      role,
+      courses
+    });
+
+    return {
+      type: 'Success',
+      message: 'Account Created Successfully',
+      statusCode: 201,
+      user
+    };
   }
 
   user = await User.create({
@@ -96,9 +114,7 @@ export const createUser = catchAsync(async (body, profileImage) => {
     email,
     password,
     passwordConfirmation,
-    role,
-    profileImage: image.secure_url,
-    profileImageId: image.public_id
+    role
   });
 
   // 4) If Everything is OK, Send User Data
@@ -119,7 +135,7 @@ export const queryUsers = catchAsync(async (req) => {
   // 1) Get All Users
   const users = await APIFeatures(req, User);
 
-  // 2) Check If Users Doesn't Exist'
+  // 2) Check If Users Doesn't Exist
   if (users.length === 0) {
     return {
       type: 'Error',
@@ -144,7 +160,7 @@ export const queryUsers = catchAsync(async (req) => {
  */
 export const queryUser = catchAsync(async (id) => {
   // 1) Get User Using It's ID
-  const user = await User.findById(id);
+  let user = await User.findById(id);
 
   // 2) Check If User Doesn't Exist
   if (!user) {
@@ -153,6 +169,10 @@ export const queryUser = catchAsync(async (id) => {
       message: `No User Found With This ID: ${id}`,
       statusCode: 404
     };
+  }
+
+  if (user.role !== 'instructor') {
+    user = await User.findById(id).select('-courses');
   }
 
   // 3) If Everything is OK, Send User Data;
@@ -165,12 +185,12 @@ export const queryUser = catchAsync(async (id) => {
 });
 
 /**
- * Update User Details Using It's ID
+ * Update User Using It's ID
  * @param     {ObjectId}  id - User ID
  * @param     {Object}    body - Updated Body
  * @returns   {Object<type|message|statusCode|user>}
  */
-export const updateUserDetails = catchAsync(async (id, body) => {
+export const updateUser = catchAsync(async (id, body) => {
   let user = await User.findById(id);
 
   // 1) Check If User Doesn't Exist
@@ -186,7 +206,7 @@ export const updateUserDetails = catchAsync(async (id, body) => {
     return {
       type: 'Error',
       message:
-        'Cannot Update Password From Here, Please Go To Update Passwor Route',
+        'Cannot Update Password From Here, Please Go To Update Password Route',
       statusCode: 400
     };
   }
@@ -211,61 +231,9 @@ export const updateUserDetails = catchAsync(async (id, body) => {
   // 4) If Everything is OK, Send User Data
   return {
     type: 'Success',
-    message: 'User Details Updated Successfully',
+    message: 'User Updated Successfully',
     statusCode: 200,
     user
-  };
-});
-
-/**
- * Update User Profile Image Using It's ID
- * @param     {ObjectId}  id - User ID
- * @param     {Object}    profileImage - Updated Profile Image
- * @returns   {Object<type|message|statusCode|user>}
- */
-export const updateUserProfileImage = catchAsync(async (id, profileImage) => {
-  let user = await User.findById(id);
-
-  // 1) Check If User Doesn't Exist
-  if (!user) {
-    return {
-      type: 'Error',
-      message: `No User Found With This ID: ${id}`,
-      statusCode: 404
-    };
-  }
-
-  // 2) Specifiy Folder Name Where The Profile Image Is Going To Be Uploaded In Cloudinary
-  const folderName = `Users/${user.name.trim().split(' ').join('')}`;
-
-  // 3) Destroy Image From Cloudinary
-  destroyFile(user.profileImageId);
-
-  // 4) Upload Image to Cloudinary
-  const image = await uploadFile(
-    dataUri(profileImage).content,
-    folderName,
-    600
-  );
-
-  // 5) Find User Document and Update it
-  user = await User.findByIdAndUpdate(
-    id,
-    {
-      profileImage: image.secure_url,
-      profileImageId: image.public_id
-    },
-    {
-      new: true,
-      runValidators: true
-    }
-  );
-
-  // 6) If Everything is OK, Send User Data
-  return {
-    type: 'Success',
-    message: 'User Image Updated Successfully',
-    statusCode: 200
   };
 });
 
@@ -287,10 +255,7 @@ export const deleteUser = catchAsync(async (id) => {
     };
   }
 
-  // 3) Delete User Profile Image
-  destroyFile(user.profileImageId);
-
-  // 4) If Everything is OK, Send Message
+  // 3) If Everything is OK, Send Message
   return {
     type: 'Success',
     message: 'Account Deleted Successfully',
