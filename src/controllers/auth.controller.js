@@ -55,8 +55,7 @@ export const register = catchAsync(async (req, res) => {
  */
 export const login = catchAsync(async (req, res) => {
   // 1) Login User Email & Password
-  const { type, message, statusCode, user } =
-    await authService.loginUserWithEmailAndPassword(req.body);
+  const { type, message, statusCode, user } = await authService.login(req.body);
 
   // 2) Check If There is an Error
   if (type === 'Error') {
