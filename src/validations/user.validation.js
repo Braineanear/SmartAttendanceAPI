@@ -21,7 +21,8 @@ export const getUsersValidate = {
     sort: Joi.string(),
     select: Joi.string(),
     limit: Joi.number().integer(),
-    page: Joi.number().integer()
+    page: Joi.number().integer(),
+    role: Joi.string()
   })
 };
 
