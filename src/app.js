@@ -40,6 +40,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Set Cookie parser
 app.use(cookieParser());
 
+// View engine setup
+// app.use(expressLayout);
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+
 //Data sanitization against XSS
 app.use(xss());
 
