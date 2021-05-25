@@ -14,7 +14,6 @@ import { User } from '../models/index';
 export const createUser = catchAsync(async (body) => {
   const {
     name,
-    username,
     email,
     password,
     passwordConfirmation,
@@ -24,14 +23,7 @@ export const createUser = catchAsync(async (body) => {
     courses
   } = body;
 
-  if (
-    !name ||
-    !username ||
-    !email ||
-    !password ||
-    !passwordConfirmation ||
-    !role
-  ) {
+  if (!name || !email || !password || !passwordConfirmation || !role) {
     return {
       type: 'Error',
       message: 'All Fields Are Required',
@@ -64,7 +56,6 @@ export const createUser = catchAsync(async (body) => {
 
     user = await User.create({
       name,
-      username,
       email,
       password,
       passwordConfirmation,
@@ -72,8 +63,6 @@ export const createUser = catchAsync(async (body) => {
       department,
       group
     });
-
-    delete user.courses;
 
     return {
       type: 'Success',
@@ -94,7 +83,6 @@ export const createUser = catchAsync(async (body) => {
 
     user = await User.create({
       name,
-      username,
       email,
       password,
       passwordConfirmation,
@@ -112,7 +100,6 @@ export const createUser = catchAsync(async (body) => {
 
   user = await User.create({
     name,
-    username,
     email,
     password,
     passwordConfirmation,
