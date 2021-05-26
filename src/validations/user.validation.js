@@ -7,7 +7,6 @@ export const createUserValidate = {
     email: Joi.string().required().email(),
     password: Joi.string().required().custom(password),
     passwordConfirmation: Joi.string().required().custom(password),
-    username: Joi.string().required(),
     name: Joi.string().required(),
     role: Joi.string().required().valid('student', 'admin', 'instructor'),
     department: Joi.string().custom(objectId),
@@ -39,8 +38,7 @@ export const updateUserValidate = {
   body: Joi.object()
     .keys({
       email: Joi.string().email(),
-      name: Joi.string(),
-      username: Joi.string()
+      name: Joi.string()
     })
     .min(1)
 };
