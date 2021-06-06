@@ -11,7 +11,6 @@ export const registerValidate = {
       .required()
       .custom(password),
     name: Joi.string().required(),
-    username: Joi.string().required(),
     role: Joi.string().required(),
     department: Joi.string().custom(objectId),
     group: Joi.string().custom(objectId)
