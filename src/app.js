@@ -1,8 +1,4 @@
-import path from 'path';
-import { fileURLToPath } from 'url';
-
 import compression from 'compression';
-import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express from 'express';
 import helmet from 'helmet';
@@ -16,8 +12,6 @@ import limiter from './middlewares/rateLimiter';
 import routes from './routes/index';
 import AppError from './utils/appError';
 import errorHandler from './utils/errorHandler';
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 
@@ -33,17 +27,6 @@ app.use(helmet());
 // Set Body parser, reading data from body into req.body
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
-
-// Serving static files
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Set Cookie parser
-app.use(cookieParser());
-
-// View engine setup
-// app.use(expressLayout);
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
 
 //Data sanitization against XSS
 app.use(xss());
