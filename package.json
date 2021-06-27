@@ -3,27 +3,18 @@
   "version": "1.0.0",
   "description": "Smart Attendance API",
   "main": "src/server.js",
-  "author": "Mahmoud Yasser",
   "license": "ISC",
   "engines": {
     "node": ">=14.0.0"
   },
   "type": "module",
   "scripts": {
-    "start": "nodemon --experimental-specifier-resolution=node src/server.js",
-    "lint": "eslint \"**/*.js\" --ignore-pattern node_modules/",
-    "lint:fix": "eslint --fix --ext .js,.jsx .",
-    "prettier": "prettier --check **/*.js",
-    "prettier:fix": "prettier --write \"./**/*.{js,jsx,json}\"",
-    "test": "mocha"
+    "start": "nodemon --experimental-specifier-resolution=node src/server.js"
   },
   "dependencies": {
     "argon2": "^0.27.2",
-    "cloudinary": "^1.25.1",
     "compression": "^1.7.4",
-    "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
-    "datauri": "^3.0.0",
     "dotenv": "^8.6.0",
     "express": "^4.17.1",
     "express-rate-limit": "^5.2.6",
@@ -35,10 +26,8 @@
     "mongoose": "^5.12.8",
     "morgan": "^1.10.0",
     "multer": "^1.4.2",
-    "nodemailer": "^6.5.0",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
-    "redis": "^3.1.2",
     "validator": "^13.6.0",
     "winston": "^3.3.3",
     "xss-clean": "^0.1.1"
