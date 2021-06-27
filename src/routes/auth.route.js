@@ -1,19 +1,12 @@
 import express from 'express';
 
 import { authController } from '../controllers/index';
-import auth from '../middlewares/auth';
 import validate from '../middlewares/validate';
 import { authValidation } from '../validations/index';
 
-const {
-  registerValidate,
-  loginValidate
-} = authValidation;
+const { registerValidate, loginValidate } = authValidation;
 
-const {
-  register,
-  login
-} = authController;
+const { register, login } = authController;
 
 const router = express.Router();
 
