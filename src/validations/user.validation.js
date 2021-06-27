@@ -40,7 +40,7 @@ export const updateUserValidate = {
       email: Joi.string().email(),
       name: Joi.string(),
       department: Joi.string().custom(objectId),
-      group: Joi.string().custom(objectId),
+      group: Joi.string().custom(objectId)
     })
     .min(1)
 };

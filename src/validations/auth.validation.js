@@ -23,24 +23,3 @@ export const loginValidate = {
     password: Joi.string().required()
   })
 };
-
-export const forgotPasswordValidate = {
-  body: Joi.object().keys({
-    email: Joi.string().email().required()
-  })
-};
-
-export const resetPasswordValidate = {
-  query: Joi.object().keys({
-    token: Joi.string().required()
-  }),
-  body: Joi.object().keys({
-    password: Joi.string().required().custom(password)
-  })
-};
-
-export const verifyEmailValidate = {
-  query: Joi.object().keys({
-    token: Joi.string().required()
-  })
-};

@@ -1,10 +1,4 @@
-import {
-  registerValidate,
-  loginValidate,
-  forgotPasswordValidate,
-  resetPasswordValidate,
-  verifyEmailValidate
-} from './auth.validation';
+import { registerValidate, loginValidate } from './auth.validation';
 import {
   createUserValidate,
   getUsersValidate,
@@ -15,10 +9,7 @@ import {
 
 const authValidation = {
   registerValidate,
-  loginValidate,
-  forgotPasswordValidate,
-  resetPasswordValidate,
-  verifyEmailValidate
+  loginValidate
 };
 
 const userValidation = {
