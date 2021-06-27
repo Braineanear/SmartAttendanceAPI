@@ -1,10 +1,6 @@
 import {
   register,
-  login,
-  forgotPassword,
-  resetPassword,
-  sendVerificationEmail,
-  verifyEmail
+  login
 } from './auth.controller';
 
 import {
@@ -44,11 +40,7 @@ import { studentAttend, getAttendance } from './attendance.controller';
 
 const authController = {
   register,
-  login,
-  forgotPassword,
-  resetPassword,
-  sendVerificationEmail,
-  verifyEmail
+  login
 };
 
 const userController = {
