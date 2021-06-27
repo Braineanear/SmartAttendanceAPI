@@ -7,7 +7,7 @@ import config from '../config/config';
 import tokenTypes from '../config/tokens';
 
 // Utils
-import { Token, User } from '../models/index';
+import { Token } from '../models/index';
 import AppError from '../utils/appError';
 import catchAsync from '../utils/catchAsync';
 
@@ -109,74 +109,4 @@ export const generateAuthTokens = catchAsync((user) => {
       expires: accessTokenExpires.toDate()
     }
   };
-});
-
-/**
- * Generate reset password token
- * @param {string} email
- * @returns {Promise<string>}
- */
-export const generateResetPasswordToken = catchAsync(async (email) => {
-  // 1) Get User's Data
-  const user = await User.findOne({ email });
-
-  // 2) Check if User Exist or not
-  if (!user) {
-    throw new AppError(`No users found with this email: ${email}`, 404);
-  }
-
-  // 3) Set Reset Token Expire Time
-  const resetTokenExpires = moment().add(
-    config.jwt.resetPasswordExpirationMinutes,
-    'minutes'
-  );
-
-  // 4) Generate Reset Token
-  const resetPasswordToken = generateToken(
-    user.id,
-    resetTokenExpires,
-    tokenTypes.RESET_PASSWORD
-  );
-
-  // 5) Save Reset Token
-  await saveToken(
-    resetPasswordToken,
-    user.id,
-    resetTokenExpires,
-    tokenTypes.RESET_PASSWORD
-  );
-
-  // 6) If Everything is OK, Send Reset Password Token
-  return resetPasswordToken;
-});
-
-/**
- * Generate verify email token
- * @param {string} email
- * @returns {Promise<string>}
- */
-export const generateVerifyEmailToken = catchAsync(async (user) => {
-  // 1) Set Verify Email Token Expire Time
-  const verifyEmailTokenExpires = moment().add(
-    config.jwt.verifyEmailExpirationMinutes,
-    'minutes'
-  );
-
-  // 2) Generate Verify Email Token
-  const verifyEmailToken = generateToken(
-    user.id,
-    verifyEmailTokenExpires,
-    tokenTypes.VERIFY_EMAIL
-  );
-
-  // 3) Save Verify Email Token
-  await saveToken(
-    verifyEmailToken,
-    user.id,
-    verifyEmailTokenExpires,
-    tokenTypes.VERIFY_EMAIL
-  );
-
-  // 4) If Everything is OK, Send Verify Email Token
-  return verifyEmailToken;
 });

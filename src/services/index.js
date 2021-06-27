@@ -1,4 +1,4 @@
-import { login, resetPassword, verifyEmail } from './auth.service';
+import authService from './auth.service';
 
 import {
   createUser,
@@ -12,18 +12,8 @@ import {
   generateToken,
   saveToken,
   verifyToken,
-  generateAuthTokens,
-  generateResetPasswordToken,
-  generateVerifyEmailToken
+  generateAuthTokens
 } from './token.service';
-
-import {
-  transport,
-  sendEmail,
-  sendResetPasswordEmail,
-  sendAfterResetPasswordMessage,
-  sendVerificationEmail
-} from './email.service';
 
 import {
   createCourse,
@@ -52,12 +42,6 @@ import {
 
 import { studentAttend, getAttendance } from './attendance.service';
 
-const authService = {
-  login,
-  resetPassword,
-  verifyEmail
-};
-
 const userService = {
   createUser,
   queryUsers,
@@ -66,21 +50,11 @@ const userService = {
   deleteUser
 };
 
-const emailService = {
-  transport,
-  sendEmail,
-  sendResetPasswordEmail,
-  sendAfterResetPasswordMessage,
-  sendVerificationEmail
-};
-
 const tokenService = {
   generateToken,
   saveToken,
   verifyToken,
-  generateAuthTokens,
-  generateResetPasswordToken,
-  generateVerifyEmailToken
+  generateAuthTokens
 };
 
 const courseService = {
@@ -117,7 +91,6 @@ export {
   authService,
   tokenService,
   userService,
-  emailService,
   courseService,
   departmentService,
   groupService,
