@@ -55,10 +55,6 @@ const userSchema = mongoose.Schema(
       enum: ['student', 'admin', 'instructor'],
       default: 'student'
     },
-    isEmailVerified: {
-      type: Boolean,
-      default: false
-    },
     passwordChangedAt: Date,
     department: {
       type: mongoose.Types.ObjectId,
