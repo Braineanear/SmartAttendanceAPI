@@ -2,11 +2,7 @@
 import catchAsync from '../utils/catchAsync';
 
 // Services
-import {
-  authService,
-  userService,
-  tokenService
-} from '../services/index';
+import { authService, userService, tokenService } from '../services/index';
 
 /**
  * Registeration
