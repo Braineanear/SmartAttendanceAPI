@@ -16,8 +16,8 @@ import { Attendance } from '../models/index';
  * @returns {Object<type|message|statusCode|attend>}
  */
 export const studentAttend = catchAsync(
-  async (course, student, startsAt, endsAt) => {
-    if (!course || !student || !startsAt || !endsAt) {
+  async (course, student, startsAt, endsAt, date) => {
+    if (!course || !student || !startsAt || !endsAt || !date) {
       return {
         type: 'Error',
         message: 'All Fields Are Required',
@@ -39,7 +39,7 @@ export const studentAttend = catchAsync(
       };
     }
 
-    const attendance = await Attendance.findOne({ student });
+    const attendance = await Attendance.findOne({ student, date });
 
     if (attendance) {
       return {
@@ -53,7 +53,8 @@ export const studentAttend = catchAsync(
       course,
       student,
       courseStartsAt: startsAt,
-      courseEndsAt: endsAt
+      courseEndsAt: endsAt,
+      date
     });
 
     return {

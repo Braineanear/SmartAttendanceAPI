@@ -4,10 +4,6 @@ import toJSON from './plugins/toJSON.plugin';
 
 const attendanceSchema = mongoose.Schema(
   {
-    date: {
-      type: String,
-      default: moment().format('l')
-    },
     student: {
       type: mongoose.Types.ObjectId,
       ref: 'User',
@@ -23,6 +19,10 @@ const attendanceSchema = mongoose.Schema(
       required: true
     },
     courseEndsAt: {
+      type: String,
+      required: true
+    },
+    date: {
       type: String,
       required: true
     }

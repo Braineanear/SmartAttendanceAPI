@@ -11,11 +11,17 @@ import { attendanceService } from '../services/index';
  * @returns {JSON}
  */
 export const studentAttend = catchAsync(async (req, res) => {
-  const { course, student, startsAt, endsAt } = req.body;
+  const { course, student, startsAt, endsAt, date } = req.body;
 
   // 1) Assign Studnt
   const { type, message, statusCode, attend } =
-    await attendanceService.studentAttend(course, student, startsAt, endsAt);
+    await attendanceService.studentAttend(
+      course,
+      student,
+      startsAt,
+      endsAt,
+      date
+    );
 
   // 2) Check If There is an Error
   if (type === 'Error') {
