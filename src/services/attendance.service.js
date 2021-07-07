@@ -39,7 +39,7 @@ export const studentAttend = catchAsync(
       };
     }
 
-    const attendance = await Attendance.findOne({ student, date });
+    const attendance = await Attendance.findOne({ student, date, course });
 
     if (attendance) {
       return {
